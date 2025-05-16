@@ -8,35 +8,6 @@ import (
 	"strings"
 )
 
-// func main(){
-// 	fmt.Println("Siapa nama Anda? ")
-// 	var name string
-// 	fmt.Scan(&name)
-// 	fmt.Println("Berapa usia Anda? ")
-// 	var age int
-// 	fmt.Scan(&age)
-// 	fmt.Println("Apa jenis kelamin Anda? ")
-// 	var gender string
-// 	fmt.Scan(&gender)
-// 	fmt.Println("Apakah Anda merokok? \n", "1. Ya 2. Tidak")
-// 	var isSmoker bool
-// 	var smoker string
-// 	fmt.Scan(&smoker)
-// 	// fmt.Scan(&isSmoker)
-// 	if smoker == "1" {
-// 		isSmoker = true
-// 	}else{
-// 		isSmoker = false
-// 	}
-// 	// fmt.Println("Rokok apa yang pernah Anda coba? ")
-// 	// var cigarVariant []string
-// 	// fmt.Scanln(&cigarVariant)
-// 	fmt.Printf( "Nama Anda : %s\n", name)
-// 	fmt.Printf( "Usia Anda : %d\n", age)
-// 	fmt.Printf( "Gender Anda : %s\n", gender)
-// 	fmt.Printf( "Merokok : %t\n", isSmoker)
-// }
-
 type response struct{
 	name string
 	age string
@@ -64,33 +35,43 @@ func doSurvey()response{
 	gender := ask("apa jenis kelamin anda?")
 	isSmoker := ask("apakah anda merokok?")
 	cigarVariant := []string{}
-	cont := true
-	for cont {
-		variant := ask("rokok apa yg pernah anda coba?")
-		if variant == "0"{
-			cont = false
-		}else{
-			cigarVariant = append(cigarVariant, variant)
+	if isSmoker != "tidak" && isSmoker != "" {
+		cont := true
+		for cont {
+			variant := ask("rokok apa yg pernah anda coba?")
+			if variant == "0"{
+				cont = false
+			}else{
+				cigarVariant = append(cigarVariant, variant)
+			}
 		}
 	}
 	answer := response{
-		name,
-		age,
-		gender,
-		isSmoker,
-		cigarVariant,
+			name:         name,
+			age:          age,
+			gender:       gender,
+			isSmoker:     isSmoker,
+			cigarVariant: cigarVariant,
 	}
 	return answer
 }
 
-func main(){
-	
-	inputResponse := doSurvey()
-	// fmt.Println()
-	// fmt.Println("")
-	// fmt.Println("")
-	resp := ask("1. input lagi\n2. lihat hasil\n3. akhiri program\n")
-	if resp == "2"{
-		fmt.Println(inputResponse)
+func main() {
+	allResponse := []response{}
+	writeSurvey := true
+
+	for writeSurvey {
+		resp := ask("1. input lagi\n2. lihat hasil\n3. akhiri program\n")
+		if resp == "1" {
+			inputResponse := doSurvey()
+			allResponse = append(allResponse, inputResponse)
+		} else if resp == "2" {
+			for _, item := range allResponse {
+				fmt.Println(item)
+			}
+			// fmt.Println(allResponse)
+		} else if resp == "3" {
+			writeSurvey = false
+		}
 	}
 }
